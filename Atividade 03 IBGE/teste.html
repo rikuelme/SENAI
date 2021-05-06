@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Dados do IBGE</title>
+</head>
+<body>
+	<!--<button onclick="">Carregar</button>-->
+	<div id="campos"></div>
+	<button onclick="buscarUF()">Gravar UF</button>
+	<div id="ufGravada"></div>
+	<script>
+		function acessarAPI(url, funcao){
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function(){
+			if(this.readyState == 4 && this.status == 200){
+				funcao(JSON.parse(this.responseText));
+			}
+			}
+			xhttp.open('GET',url, true);
+			xhttp.send();
+		}
+		function montarRegiao(lsRegiao){
+			var label = document.createElement("label");
+			label.innerHTML = "Região:";
+			document.getElementById("campos").appendChild(label); 
+			var select = document.createElement("select");
+			select.id = "regiao";
+			select.name = "regiao";
+			select.addEventListener("change", function(){
+				var url = 'https://servicodados.ibge.gov.br/api/v1/localidades/';
+				console.log(this.value);
+				if(this.value == ''){
+					url += 'estados';
+				}else{
+					url += `regioes/${this.value}/estados`;
+				}
+				console.log(url);
+				acessarAPI(url,montarUF);
+			});
+			document.getElementById("campos").appendChild(select);
+			var opcao = document.createElement("option");
+			opcao.value = "";
+			opcao.innerHTML = "Selecione";
+			document.getElementById("regiao").appendChild(opcao);
+
+			//lsRegiao = JSON.parse(lsRegiao);
+			console.log(typeof lsRegiao);
+			for(i in lsRegiao){
+				console.log(lsRegiao[i]);
+				opcao = document.createElement("option");
+				opcao.value = lsRegiao[i].id;
+				opcao.innerHTML = lsRegiao[i].nome+" ("+lsRegiao[i]['sigla']+')';
+				document.getElementById("regiao").appendChild(opcao);
+			}}
+		function montarUF(lsUf){
+			console.log(lsUf);
+			var select = document.getElementById("uf");
+
+			if(select == null){
+				var label = document.createElement("label");
+			label.innerHTML = "<br>UF:";
+			document.getElementById("campos").appendChild(label);
+
+				select = document.createElement("select");
+				select.id = "uf";
+				select.name = "uf";
+				document.getElementById("campos").appendChild(select);
+			}
+
+			select.innerHTML = "";
+			var opcao = document.createElement("option");
+			opcao.value = "";
+			opcao.innerHTML = "Selecione";
+			select.appendChild(opcao);
+
+			for(i in lsUf){
+				opcao = document.createElement("option");
+				opcao.value = lsUf[i].id;
+				opcao.innerHTML = `${lsUf[i].sigla} - ${lsUf[i].nome}`;
+				select.appendChild(opcao);
+			}
+	}
+	function buscarUF(){
+			var uf = document.getElementById("uf");
+			acessarAPI(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf.value}`, gravarUF);
+		}
+	function gravarUF(objUF){
+		//console.log(objUF);
+		localStorage.setItem("objUF", JSON.stringify(objUF));
+		mostrarUF();
+	}
+	function mostrarUF(){
+		var objUF = localStorage.getItem("objUF");
+		objUF = JSON.parse(objUF);
+		console.log(objUF);
+		document.getElementById("ufGravada").innerHTML = `${objUF.nome}`;
+	}
+
+		acessarAPI('https://servicodados.ibge.gov.br/api/v1/localidades/regioes', montarRegiao);
+		acessarAPI('https://servicodados.ibge.gov.br/api/v1/localidades/estados', montarUF);
+		mostrarUF();
+
+	</script>
+	
+</body>
+</html>

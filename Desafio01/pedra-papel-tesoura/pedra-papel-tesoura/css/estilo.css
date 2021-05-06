@@ -1,0 +1,33 @@
+body{
+    background-color: aliceblue;
+}
+
+#jogo{
+    width: 800px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h1{
+    text-align: center;
+}
+
+#campo{
+    border: 6px solid black;
+}
+
+img{
+    filter: grayscale(100%);
+    cursor: pointer;
+}
+
+#placar{
+    font-size: 40px;
+    text-align: center;
+}
+#jogar{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}

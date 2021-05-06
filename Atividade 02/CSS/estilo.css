@@ -1,0 +1,17 @@
+body{
+	font-family: Verdana;
+ 	color:lightblue;
+  	background-color: black;
+  }
+#Titulo{ 
+	text-align: center; 
+	}
+#valor_peso{
+	padding-right: 2px;
+	margin-left: 10px;
+}
+#valor_imc{
+	text-align: center;
+	color: coral;
+	
+}

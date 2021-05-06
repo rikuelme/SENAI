@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Exemplo 5.4 - Refeito</title>
+	<style>
+		img.infantil { float: left; height: 420px; width: 300px; }
+		h1 { border-bottom-style: inset; }
+		pre { font-size: 1.2em; }
+	</style>
+</head>
+<body>
+	<img src="img/ex5_4-Copia.jpg" alt="Img de Brinquedoteca" class="infantil">
+	<h1>Programa Brinquedoteca</h1>
+	<p>Nome da Criança:
+		<input type="text" id="inNomeCrianca" autofocus>
+	</p>
+	<p>Idade:
+		<input type="text" id="inIdadeCrianca">
+		<input type="button" value="Acrescentar" id="btAcrescentar">
+	</p>
+	<p>
+		<input type="button" value="Listar Todos" id="listaT">
+		<input type="button" value="Quantidade de Crianças por Idade" id="nCriancas">
+	</p>
+	<pre id="lLista"></pre>
+	<script>
+		var criancas = [];
+
+		function addCrianca() {
+			var inNomeCrianca = document.getElementById("inNomeCrianca");
+			var inIdadeCrianca = document.getElementById("inIdadeCrianca");
+
+			var nome = inNomeCrianca.value;
+			var idade = Number(inIdadeCrianca.value);
+
+			if (nome == "" || inIdadeCrianca.value == "" || isNaN(idade)) {
+				alert("Informe os dados corretamente");
+				inNomeCrianca.focus();
+				return;
+			}
+			criancas.push({nome: nome, idade: idade});
+			inNomeCrianca.value = "";
+			inIdadeCrianca.value = "";
+			inNomeCrianca.focus();
+
+			listaC();
+		}
+		var btAcrescentar = document.getElementById("btAcrescentar");
+		btAcrescentar.addEventListener("click", addCrianca);
+
+		function listaC(){
+			if (criancas.length == 0) {
+				alert("Não tem criança na lista");
+				return;
+			}
+			var lista = "";
+
+			for (var i = 0; i < criancas.length; i++){
+				lista += criancas[i].nome + " - " +criancas[i].idade + " anos\n";
+			}
+			document.getElementById("lLista").textContent = lista;
+		}
+		var listaT = document.getElementById("listaT");
+		listaT.addEventListener("click", listaC);
+
+		function qntddCrianca() {
+			if (criancas.length ==0) {
+				alert("Não tem criança na lista");
+				return;
+			}
+			var copia = criancas.slice();
+
+			copia.sort(function(a,b) { return a.idade - b.idade});
+			var resumo = "";
+			var aux = copia[0].idade;
+			var nomes = [];
+
+			for (var i = 0; i < copia.length; i++){
+				if (copia[i].idade == aux) {
+					nomes.push(copia[i].nome);
+				} else {
+					resumo += aux + " ano(s): " + nomes.length + " criança(s) - ";
+					resumo += (nomes.length / copia.length * 100).toFixed(2) + "%\n";
+					resumo += "("+ nomes.join(", ") + ")\n\n";
+					aux = copia[i].idade;
+					nomes = [];
+					nomes.push(copia[i].nome);
+				}
+			}
+			resumo += aux + " ano(s): " + nomes.length + " criança(s) - ";
+			resumo += (nomes.length / copia.length * 100).toFixed(2) + "%\n";
+  			resumo += "(" + nomes.join(", ") + ")\n\n";
+
+  			document.getElementById("lLista").textContent = resumo;
+		}
+		var nCriancas = document.getElementById("nCriancas");
+		nCriancas.addEventListener("click", qntddCrianca);
+	</script>
+</body>
+</html>

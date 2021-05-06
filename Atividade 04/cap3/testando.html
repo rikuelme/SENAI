@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Exemplo 3.2 Refeito</title>
+	<style>
+		img{float: left; height: 500px; width: 500px;}
+		h1{ border-bottom-style: inset; }
+	</style>
+</head>
+<body>
+	<img src="img/ex3_2-Copia.jpg" alt="Balança de Peso">
+	<h1>Programa Cálculo do Peso Ideal</h1>
+	<p>Nome:
+		<input type="text" id="calcNome">
+	</p>
+	<p>Sexo:
+		<input type="radio" name="sexo" id="sMasculino">Masculino
+		<input type="radio" name="sexo" id="sFeminino">Feminino		
+	</p>
+	<p>Altura:
+		<input type="text" name="calcAltura">
+	</p>
+	<p>
+		<input type="button" value="Calcular Peso Ideal" id="Calcular">
+		<input type="button" value="Limpar Dados" id="Limpar">
+	</p>
+	<h3 id="Resposta"></h3>
+	<script>
+		function calcularPeso(){
+			var calcNome = document.getElementById("calcNome");
+			var sMasculino = document.getElementById("sMasculino");
+			var sFeminino = document.getElementById("sFeminino");
+			var calcAltura = document.getElementById("calcAltura");
+			var Resposta = document.getElementById("Resposta");
+
+			var nome = calcNome.value;
+			var masculino = sMasculino.checked;
+			var feminino = sFeminino.checked;
+			var altura = Number (calcAltura).value;
+
+			if (nome == "" || (masculino == false && feminino == false)){
+				alert("Por favor, digite seu nome e informe o sexo...");
+				calcNome.focus();
+				return;
+			}
+			if (altura == 0 || isNaN(altura)){
+				alert("Por favor, informe a altura corretamente...");
+				calcAltura.focus();
+				return;
+			}
+			if (masculino){
+				var peso = 22 * Math.pow(altura, 2);
+			} else {
+				var peso = 21 * Math.pow(altura, 2);
+			}
+			//Resposta.textContent = nome + "Seu Peso Ideal é" + peso.toFixed(3) + "kg";
+		}
+		var Resultado = document.getElementById("Calcular");
+		Calcular.addEventListener("click", calcularPeso);
+Resposta.textContent = nome + "Seu Peso Ideal é" + peso.toFixed(3) + "kg";
+		function limparDados(){
+			document.getElementById("calcNome").value ="";
+			document.getElementById("sMasculino").checked = false;
+			document.getElementById("sFeminino").checked = false;
+			document.getElementById("calcAltura").value = "";
+			document.getElementById("Resposta").textContent = "";
+			document.getElementById("Nome").focus();
+		}
+		var Limpar = document.getElementById("Limpar");
+		Limpar.addEventListener("click", limparDados);
+	</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input[type=text],
+        select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type=submit] {
+            width: 20%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        div {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        h3,
+        h4,
+        div {
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        h3 {
+            border-bottom: #4CAF50 solid 3px;
+        }
+
+        h4 {
+
+            border-left: #4CAF50 solid 4px;
+            padding-left: 4px;
+        }
+
+        a {
+            color: #4CAF50;
+            margin-left: 5px;
+            text-decoration: none;
+
+        }
+
+        @media only screen and (max-width: 1600px) {
+
+            h3,
+            h4,
+            div {
+                margin-left: auto;
+                margin-right: auto;
+                width: 90%;
+            }
+    </style>
+
+<body>
+
+
+    <h3>API de Localidades</h3>
+    <div>
+        <form>
+            <label for="regiao">Região</label>
+            <select id="regiao" name="regiao">
+                <option>Selecione</option>
+            </select>
+
+            <label for="uf">UF</label>
+            <select id="uf" name="uf">
+                <option>Selecione</option>
+            </select>
+
+            <label for="municipio">Municípios</label>
+            <select id="municipio" name="municipio">
+                <option>Selecione</option>
+            </select>
+
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+<script>
+    function acessarAPI(url, funcao){
+    var xhttp = new XMLHttpRequest()
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200){
+            funcao(JSON.parse(this.responseText))
+        }
+    }
+
+    xhttp.open('GET', url, true)
+    xhttp.send()
+}
+
+function regiao(regioes){
+
+    var select = document.getElementById('regiao')
+    select.addEventListener('change', 
+        function() {
+            var url = 'https://servicodados.ibge.gov.br/api/v1/localidades/'
+
+            if (this.value == "Selecione"){
+                url += 'estados'
+
+                document.getElementById('municipio').innerHTML = ''
+                let opcao = document.createElement('option')
+                opcao.value = ""
+                opcao.innerHTML = "Selecione"
+                document.getElementById('municipio').appendChild(opcao)
+
+            }else{
+                url += `regioes/${this.value}/estados`
+                
+                document.getElementById('municipio').innerHTML = ''
+                let opcao = document.createElement('option')
+                opcao.value = ""
+                opcao.innerHTML = "Selecione"
+                document.getElementById('municipio').appendChild(opcao)
+            }  
+            if (this.value) 
+            console.log(this.value)
+            acessarAPI(url, uf)                         
+        }                
+    )
+
+    console.log(typeof regioes)
+
+    for (i in regioes){
+
+        console.log(regioes[i])
+        opcao = document.createElement('option')
+        opcao.value = regioes[i].id
+        opcao.innerHTML = `${regioes[i].nome}  (${regioes[i].sigla})`
+        document.getElementById('regiao').appendChild(opcao)
+    }
+}
+
+function uf(ufs){
+
+    var select = document.getElementById('uf')
+    select.addEventListener('change', function(){
+       
+     acessarAPI(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${this.value}/municipios`, municipio)
+    
+    }
+    
+)
+    document.getElementById('uf').innerHTML = ''
+    var opcao = document.createElement('option')
+    opcao.value = ""
+    opcao.innerHTML = "Selecione"
+    document.getElementById('uf').appendChild(opcao)
+
+    console.log(ufs)
+    for( i in ufs) {
+    
+    console.log(ufs[i])
+    var opcao = document.createElement('option')
+    opcao.value = ufs[i].id
+    opcao.innerHTML = `${ufs[i].nome}  (${ufs[i].sigla})`
+    document.getElementById('uf').appendChild(opcao)
+    }
+}
+
+function municipio(municipios){
+    
+    document.getElementById('municipio').innerHTML = ''
+    var opcao = document.createElement('option')
+    opcao.value = ""
+    opcao.innerHTML = "Selecione"
+    document.getElementById('municipio').appendChild(opcao)
+    
+    for( i in municipios) {
+    
+    console.log(municipios[i])
+    var opcao = document.createElement('option')
+    opcao.value = municipios[i].id
+    opcao.innerHTML = `${municipios[i].nome}`
+    document.getElementById('municipio').appendChild(opcao)
+   
+}
+}
+
+acessarAPI('https://servicodados.ibge.gov.br/api/v1/localidades/regioes', regiao)
+acessarAPI('https://servicodados.ibge.gov.br/api/v1/localidades/estados', uf)
+</script>
+
+    <h4>Atividade 03</h4>
+    <div>
+        <p>
+            Coloque de forma dinâmica os combos de seleção para Região, UF e Municípios, todos devem consumir a API do
+            IBGE.<a href="https://servicodados.ibge.gov.br/api/docs/localidades">API IBGE</a>
+            <hr>
+        <ul>
+            <li>As opções Região e Uf podem vir preenchidas ao carregar a página pela primeira vez</li>
+            <li>A opção município só é carregada depois que uma UF é escolhida</li>
+            <li>Quando o usuário trocar alguma região as opções do município devem ser apagadas, para não correr o risco
+                de alguma seleção incorreta. </li>
+        </ul>
+        (Exemplo: Região> RJ, UF>SP, Município> São Paulo)
+        <br>
+
+
+        </p>
+
+    </div>
+
+</body>
+
+</html>

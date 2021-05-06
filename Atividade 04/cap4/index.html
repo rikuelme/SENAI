@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Exemplo 4.5 - Refeito</title>
+	<style>
+		img.normal { float: left; height: 400px; width: 400px; }
+		img.cofre { float: left; height: 520px; width: 400px; }
+		h1 {border-bottom-style: inset;}
+		pre { font-size: 1.2em; }
+		img.direita {float: right;height: 400px; width: 400px;}
+	</style>
+</head>
+<body>
+	<img src="img/ex4_5-Copia.jpg" alt="Contas a Pagar" class="cofre">
+	<h1>Programa de Contas do Mês</h1>
+	<p>Descrição da Conta:
+		<input type="text" id="inDescrever">
+	</p>
+	<p>Valor a Pagar R$: 
+		<input type="text" id="inQuantidade">		
+	</p>
+	<input type="button" value="Registrar Conta" id="Registrar">
+	<pre id="lContas"></pre>
+	<pre id="cTotal"></pre>
+<script>
+	var nContas = 0;
+	var vTotal = 0;
+	var resposta = "";
+
+	function rConta(){
+		var inDescrever = document.getElementById("inDescrever");
+		var inQuantidade = document.getElementById("inQuantidade");
+		var lContas = document.getElementById("lContas");
+		var cTotal = document.getElementById("cTotal");
+
+		var descrever = inDescrever.value;
+		var quantidade = Number(inQuantidade.value);
+		console.log(quantidade);
+
+		if (descrever == "" || quantidade == 0 || isNaN(quantidade)) {
+			alert("Informe os dados corretamente.");
+			inDescrever.focus();
+			return;
+		}
+		nContas++;
+		vTotal = vTotal + quantidade;
+		resposta = resposta + descrever + " - R$: " + quantidade.toFixed(2) + "\n";
+		lContas.textContent = resposta + "---------------";
+		cTotal.textContent = nContas + " Conta(s) - Total R$: "+ vTotal.toFixed(2);
+		inDescrever.value = "";
+		inQuantidade.value = "";
+		inDescrever.focus();
+	}
+	var Registrar = document.getElementById("Registrar");
+	Registrar.addEventListener("click", rConta);
+</script>
+</body>
+</html>

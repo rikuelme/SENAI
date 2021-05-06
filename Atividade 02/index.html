@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<title>CÁLCULO DO IMC</title>
+	<style>
+		body{
+			font-family: Verdana;
+			color: lightblue;
+			background-color: black;
+		}
+		#titulo{
+			text-align: center;	
+		}
+		#valor_peso{
+			padding-right: 2px;
+			margin-left: 10px;
+		}
+		#valor_imc{
+			text-align: center;
+			color: coral;
+		}
+	</style>
+</head>
+<body>
+	<fieldset>
+		<legend id="titulo">Cálculo do Índice de Massa Corporal - IMC </legend>
+		<label>Nome:</label>
+		<input type="text" id="nome">
+		<br>
+		<label>Peso:</label>
+		<input type="text" id="valor_peso">
+		<br>
+		<label>Altura:</label>
+		<input type="text" id="valor_altura">
+		<br>
+		<input type="button" value="Calcular" onclick="calculo()">
+		<input type="reset" value="Limpar" id="clear">
+		<br><p id="valor_imc"></p>
+	</fieldset>
+	<script>
+		function calculo(){
+			var valor_peso = Number(document.getElementById("valor_peso").value);
+			var valor_altura = Number(document.getElementById("valor_altura").value);
+			var imc = valor_peso/(valor_altura*valor_altura);
+			var nome = document.getElementById("nome").value;
+			if (imc < 20){
+				document.getElementById("valor_imc").innerHTML = "Resultado: "+ nome + ", o seu IMC é "+imc.toFixed(2)+". Você está a baixo do peso.";
+			}else if (imc > 20 && imc <= 25){
+				document.getElementById("valor_imc").innerHTML = "Resultado: "+ nome + ", o seu IMC é "+imc.toFixed(2)+". Você está no Peso Ideal.";
+			}else if (imc > 25 && imc <= 30){
+				document.getElementById("valor_imc").innerHTML = "Resultado: "+ nome + ", o seu IMC é "+imc.toFixed(2)+". Você está com Sobrepeso.";
+			}else if (imc > 30 && imc <= 35){
+				document.getElementById("valor_imc").innerHTML = "Resultado: "+ nome + ", o seu IMC é "+imc.toFixed(2)+". Você está com Obesidade Moderada.";
+			}else if (imc > 35 && imc <= 40){
+				document.getElementById("valor_imc").innerHTML = "Resultado: "+ nome + ", o seu IMC é "+imc.toFixed(2)+". Você está com Obesidade Severa.";
+			}else if (imc > 40){
+				document.getElementById("valor_imc").innerHTML = "Resultado: "+ nome + ", o seu IMC é "+imc.toFixed(2)+". Você está com Obesidade Mórbida.";
+			}else{
+				alert("Digite o seu nome, em seguida seu peso e altura para calcular o IMC.");
+	}
+}
+var clear = document.getElementById("clear")
+clear.addEventListener("click", function(){
+	location.reload();
+});
+	</script>
+</body>
+</html>

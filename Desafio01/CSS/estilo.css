@@ -1,0 +1,16 @@
+body{
+	background-color: aliceblue;
+}
+#jogo{
+	width: 200px;
+	background-color: white;
+	margin-left: 200px;
+	margin-right: auto;
+}
+h1{
+	text-align: center;
+
+}
+#campo{
+	border: 6px solid;
+} 
