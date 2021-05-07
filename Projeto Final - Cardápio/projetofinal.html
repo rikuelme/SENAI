@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,6 +73,7 @@
         position: relative;
         height: 66px;
         margin-top: 6px;
+        cursor: pointer;
         }
         .produto .codProduto{
         position: absolute;
@@ -121,7 +122,29 @@
         }
         .addProduto{
         height: 20px;
-        background-color: grey;
+        background-color: gray;
+        position: relative;
+        text-align: center;
+        font-family: "Alfa Slab One";
+        display: none;
+        }
+        .botoes{
+            position: absolute;
+            right: 10px;
+        }
+        .botoes button{
+            width: 20px;
+            height: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .btMais{
+            background-color: #ffd900;
+            color: black;
+        }
+        .btMenos{
+            background-color: black;
+            color: #ffd900;
         }
         @media only screen and (max-width: 500px) {
             #enviar {
@@ -147,6 +170,7 @@
             }
         }
     </style>
+
 </head>
 
 <body>
@@ -158,6 +182,7 @@
     </header>
     <div class="conteudo">
     <h2>Salsicha na Chapa <span>HOTDOG</span></h2>
+    <div class="itemProduto">
     <div class="produto">
         <div class="codProduto"> 
         01
@@ -170,89 +195,51 @@
     </span>
     </div>
     <div class="addProduto">
-    <div class="valorParcial">
+    <span class="valorParcial" id="parcialValor">
     R$ 0.0 (x0)
-    </div>    
-    </div>
-    <div class="botoes">
-    <button>+</button>
-    <button>-</button>
-    </div>
-    <div class="produto">
-        <div class="codProduto"> 
-        02
-        </div>
-        <div class="valorProduto">
-        R$10.0
-        </div> 
-    <span class="descProduto">
-        Pão,salsicha Perdigão, presunto, mussarela, milho, tomate, bacon e maionese.
-    </span>
-    </div>
-    <h2>Frango na Chapa <span>HOTDOG</span></h2>
-    <div class="produto">
-        <div class="codProduto"> 
-        04
-        </div>
-        <div class="valorProduto">
-        R$12.0
-        </div> 
-    <span class="descProduto">
-        Pão,filé de frango, bacon, mussarela, maionese, milho, tomate, alface e cebola roxa.
+    </span>    
+    
+    <span class="botoes">
+    <button class="btMais" onclick="adcProduto()">+</button>
+    <button class="btMenos " onclick="removProduto()">-</button>
     </span>
     </div>
     <h2>ADICIONAIS</h2>
     <div class="adicionais">
-    <div class="valorProduto">
-    R$10.0
-    </div>
-    <span class="descProduto">
-    COMBO (Batata+refri)
-    </span>
-    </div>
-    <div class="adicionais">
-    <div class="valorProduto">
-    R$10.0
-    </div>
-    <span class="descProduto">
-    Batata Palha
-    </span>
-    </div>
-    <div class="adicionais">
         <div class="valorProduto">
-        R$10.0
-        </div>
-        <span class="descProduto">
-        Calabresa
-        </span>
-        </div>
-        <h2>BEBIDAS</h2>
-        <div class="adicionais">
-        <div class="valorProduto">
-        R$10.0
-        </div>
-        <span class="descProduto">
-        Red Bull
-        </span>
-        </div>
-        <div class="adicionais">
-        <div class="valorProduto">
-        R$10.0
-            </div>
-            <span class="descProduto">
-            Coca-Cola
-            </span>
-            </div>
-            <div class="adicionais">
-            <div class="valorProduto">
             R$10.0
-            </div>
-            <span class="descProduto">
-            Cerveja
-            </span>
-            </div>
+        </div>
+        <span class="descProduto">
+            COMBO (Batata+refri)
+        </span>
     </div>
+    <script>
+        qtProduto = 0;
+        function adcProduto(){
+            qtProduto++;
+            atualizarParcialValor();
+        }
+        function removProduto(){
+            if (qtProduto == 0) return;
+            qtProduto--;
+            atualizarParcialValor()
+        }
+        function atualizarParcialValor(){
+            resultado = `R$ ${(10.0 * qtProduto).toFixed(1)} (x${qtProduto})`
+            document.getElementById("parcialValor").innerHTML = resultado;
+        }
+        var acc = document.getElementsByClassName("produto");
+        acc[0].addEventListener("click", function(){
+            var panel = this.nextElementSibling;
+            if (panel.style.display == "block"){
+                panel.style.display = "none";
+            }else{
+                panel.style.display = "block";
+            }
+
+        })
+    </script>
     
 </body>
-
+ 
 </html>
