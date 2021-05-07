@@ -40,9 +40,11 @@
 			fim = (pg * 5);
 			inicio = fim - 5;
 			txLinhas = "";
+
+		var ordenador = "<td><button onclick='ordenar(this,-1)'>Cima</button><button onclick='ordenar(this,1)'>Baixo</button></td>";
 		for (i = inicio; i < fim; i++){
 			if (lsAlunos[i] == undefined)break;
-			txLinhas += `<tr><td>${Number(i) + 1}</td><td>${lsAlunos[i]}</td><td><span>a</span><span>b</span></td></tr>`;
+			txLinhas += `<tr><td>${Number(i) + 1}</td><td>${lsAlunos[i]}</td>`+ ordenador+`</tr>`;
 	} 
 		document.getElementById("corpoTabela").innerHTML = txLinhas;
 		itemLista = document.getElementById("pg-"+pg);
@@ -58,7 +60,15 @@
 	function mudarPagina(pg){
 		carregarTabela(pgAtual + pg);
 	}
+	function ordenar(btn, ordem){
+		var trAtual = btn.parentNode.parentNode;
 
+		if (ordem == 1 && trAtual.previousSibling != null) {
+			trAtual.nextSibling.after(trAtual);
+		}else if (ordem == -1 && trAtual.previousSibling != null) {
+			trAtual.previousSibling.before(trAtual);
+		}
+	}
 
 	</script>
 
