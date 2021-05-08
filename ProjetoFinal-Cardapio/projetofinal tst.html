@@ -181,19 +181,21 @@
         </h1>
     </header>
     <div class="conteudo" id="conteudo">
+        <div class="grupo">
+        </div>
         <h2>
             Salsicha na Chapa <span>HOTDOG</span>
         </h2>
         <div class="itemProduto">
             <div class="produto">
                 <div class="codProduto"> 
-                        01
+                        <span class="cod">01</span>
                     </div>
                     <div class="valorProduto">
                         R$10.0
                     </div> 
                     <span class="descProduto">
-                        Pão, salsicha, ...
+                        .
                     </span>
                     </div>
                     <div class="add-produto">
@@ -229,7 +231,7 @@
         }
         var lsProdutos = [
             {qt=0, cod: "01", valor: 10, grupo: "Salsicha na Chapa", categoria: "HOTDOG", descricao:"Pão, salsicha..."}
-            ,{qt=0, cod: "02", valor: 12.5, grupo: "Salsicha na Chapa", categoria: "HOTDOG", descricao:"Pão, salsicha..."},
+            ,{qt=0, cod: "02", valor: 12.5, grupo: "Salsicha na Chapa", categoria: "HOTDOG", descricao:"Pão, salsicha..."}
 
             ,{qt=0, cod: "03", valor: 29.5, grupo: "Salsicha na Chapa", categoria: "HOTDOG", descricao:"Pão, salsicha..."}      ];
         function loadProdutos(){
@@ -250,7 +252,7 @@
             }
             document.getElementsByClassName("itemProduto")[0].setAttribute("style", "display: none;");
         }
-        loadProdutos();
+        lsProdutos = loadProdutos();
 
         var acc = document.getElementsByClassName("produto");
         for (i in acc){
