@@ -138,11 +138,11 @@
             border: none;
             cursor: pointer;
         }
-        .btMais{
+        .btAumentar{
             background-color: #ffd900;
             color: black;
         }
-        .btMenos{
+        .btDiminuir{
             background-color: black;
             color: #ffd900;
         }
@@ -180,65 +180,92 @@
             <button id="enviar">ENVIAR</button>
         </h1>
     </header>
-    <div class="conteudo">
-    <h2>Salsicha na Chapa <span>HOTDOG</span></h2>
-    <div class="itemProduto">
-    <div class="produto">
-        <div class="codProduto"> 
-        01
-        </div>
-        <div class="valorProduto">
-        R$10.0
-        </div> 
-    <span class="descProduto">
-        Pão,salsicha Perdigão, presunto, mussarela, milho, tomate, batata palha e maionese.
-    </span>
-    </div>
-    <div class="addProduto">
-    <span class="valorParcial" id="parcialValor">
-    R$ 0.0 (x0)
-    </span>    
-    
-    <span class="botoes">
-    <button class="btMais" onclick="adcProduto()">+</button>
-    <button class="btMenos " onclick="removProduto()">-</button>
-    </span>
-    </div>
-    <h2>ADICIONAIS</h2>
-    <div class="adicionais">
-        <div class="valorProduto">
-            R$10.0
-        </div>
-        <span class="descProduto">
-            COMBO (Batata+refri)
-        </span>
-    </div>
+    <div class="conteudo" id="conteudo">
+        <h2>
+            Salsicha na Chapa <span>HOTDOG</span>
+        </h2>
+        <div class="itemProduto">
+            <div class="produto">
+                <div class="codProduto"> 
+                        01
+                    </div>
+                    <div class="valorProduto">
+                        R$10.0
+                    </div> 
+                    <span class="descProduto">
+                        Pão, salsicha, ...
+                    </span>
+                    </div>
+                    <div class="add-produto">
+                        <span class="valorParcial" id="parcialValor">
+                            R$ 0.0 (x0)
+                        </span>    
+                        <span class="botoes">
+                            <button class="btAumentar">+</button>
+                            <button class="btDiminuir">-</button>
+                        </span>
+                    </div>
+                    <h2>ADICIONAIS</h2>
+                    <div class="adicionais">
+                        <div class="valorProduto">
+                            R$10.0
+                        </div>
+                        <span class="descProduto">
+                            COMBO (Batata+refri)
+                        </span>
+                    </div>
+                </div>
+            </div>
     <script>
         qtProduto = 0;
-        function adcProduto(){
-            qtProduto++;
-            atualizarParcialValor();
-        }
-        function removProduto(){
-            if (qtProduto == 0) return;
-            qtProduto--;
-            atualizarParcialValor()
-        }
-        function atualizarParcialValor(){
-            resultado = `R$ ${(10.0 * qtProduto).toFixed(1)} (x${qtProduto})`
-            document.getElementById("parcialValor").innerHTML = resultado;
-        }
-        var acc = document.getElementsByClassName("produto");
-        acc[0].addEventListener("click", function(){
-            var panel = this.nextElementSibling;
-            if (panel.style.display == "block"){
-                panel.style.display = "none";
-            }else{
-                panel.style.display = "block";
+        function addProduto(i, add){
+            p = lsProdutos[i];
+            p.qt += add;
+            if (p.qt < 0){
+                return;
             }
+            valorAtual = p.qt * p.valor
+            document.getElementById(`parcial-${i}`).innerHTML = `R$ ${valorAtual.toFixed(1)} (x${p.qt})`;
+        }
+        var lsProdutos = [
+            {qt=0, cod: "01", valor: 10, grupo: "Salsicha na Chapa", categoria: "HOTDOG", descricao:"Pão, salsicha..."}
+            ,{qt=0, cod: "02", valor: 12.5, grupo: "Salsicha na Chapa", categoria: "HOTDOG", descricao:"Pão, salsicha..."},
 
-        })
-    </script>
+            ,{qt=0, cod: "03", valor: 29.5, grupo: "Salsicha na Chapa", categoria: "HOTDOG", descricao:"Pão, salsicha..."}      ];
+        function loadProdutos(){
+            for (i in lsProdutos){
+                p = lsProdutos[i];
+                var produto = document.getElementsByClassName("itemProduto")[0].cloneNode(true);
+                    produto.getElementsByClassName("codProduto")[0].innerHTML = p.cod;
+                    produto.getElementsByClassName("valorProduto")[0].innerHTML = p.valor;
+                    produto.getElementsByClassName("descProduto")[0].innerHTML = p.descricao;
+                    document.getElementById("conteudo").appendChild(produto);
+                var btMais = produto.getElementsByClassName("btAumentar")[0];
+                    btMais.setAttribute("onclick", `addProduto(${i}, 1)`);
+                var btMenos = produto.getElementsByClassName("btDiminuir")[0];
+                    btMenos.setAttribute("onclick", `addProduto(${i}, -1)`);
+
+                    produto.getElementsByClassName("valorParcial")[0].setAttribute("id", `parcial-${i}`);
+                    console.log(produto)
+            }
+            document.getElementsByClassName("itemProduto")[0].setAttribute("style", "display: none;");
+        }
+        loadProdutos();
+
+        var acc = document.getElementsByClassName("produto");
+        for (i in acc){
+            temp = acc[i];
+            temp.addEventListener("click", function(){
+                var panel = this.nextElementSibling;
+                if (panel.style.display == "block"){
+                        panel.style.display = "none";
+                }else{
+                        panel.style.display = "block";
+                }
+
+            })
+}
+ </script>
     
 </body>
  

@@ -1,30 +1,23 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
 <body>
   <script>
-    let lsAlunos = ["Alef Mourão dos Santos"
-  ,"Andrei Alexei Levy Buslik"
-  ,"Bruno Rafael"
-  ,"Danilo Silva Marques"
-  ,"Dayane Rodrigues Soares"
-  ,"Diego de Souza Sampaio"
-  ,"Emerson de Matos Felisberto"
-  ,"Gabriel de Oliveira Pinho"
-  ,"Henrique Pereira da Silva"
-  ,"Jhone Silva de Souza Justino"
-  ,"Jose Gildevan da Silva Santos"
-  ,"João Francisco dos Santos Chagas Goulart"
-  ,"Julia Torres Furtado Lima"
-  ,"Jônathas da Silva Maciel"
-  ,"Lorena Oliveira Muniz Ferreira"
-  ,"Lucas Luna Cavalcante"
-  ,"Marcos Gabriel Pereira Silva"
-  ,"Marcos Guilherme Barbosa da Silva"
-  ,"Thays Ferreira Melo"
-  ,"Yury Negreiros Santos"
-  ,"Marcos Gabriel Pereira Silva"];
+    let lsAlunos = ["Andre Alex", "Alef Mourão dos Santos", "Danilo Rodrigues Soares", "Dhiego de Sampaio", "Emerson de Ferto", "Gabriel de Oliveira ", "Jhoune Souza Justino", "Josef Gildevan Santos", "João Santos Chagas", "Julio Lima", "Jônatas Maciel", "Loren Muniz Ferreira", "Luna Cavalcante", "Marcos Silva", "Marcos Barbosa da Silva", "Tais Pereira Melo", "Yudi Medeiros Santos", "Marco Pereira Silva"];
 
 
     pgAtual = 0;
+
+    function ordenar(i, ordem) {
+      var i = Number(i);
+      var ordem = Number(ordem);
+      
+        if(lsAlunos [i + ordem] == undefined){
+          return;
+        }
+        auxiliar = lsAlunos[i];
+        lsAlunos[i] = lsAlunos [i + ordem];
+        lsAlunos[i + ordem] = auxiliar;
+        carregarTabela(document.getElementById('pgAT').value)
+    }
 
     function carregarTabela(pg) {
       tamanhoArray = Math.ceil((lsAlunos.length) / 5);
@@ -36,12 +29,19 @@
       fim = (pg * 5);
       inicio = fim - 5;
       txLinhas = "";
-      // aqui cria um par de botões, pode usar qualquer elemento que quiser e aplicar estilo
-      var ordenador = "<td><button onclick='ordenar(this,-1)'>Cima</button><button onclick='ordenar(this,1)'>Baixo</button></td>"
       
+      // aqui cria um par de botões, pode usar qualquer elemento que quiser e aplicar estilo
+
       for (i = inicio; i < fim; i++) {
         if (lsAlunos[i] == undefined) break;
-        txLinhas += `<tr><td>${Number(i) + 1}</td><td>${lsAlunos[i]}</td>` + ordenador + `</tr>`;
+        txLinhas += `<tr>
+                        <td>${Number(i) + 1}</td>
+                        <td>${lsAlunos[i]}</td>
+                        <td>
+                            <button onclick='ordenar(${i},-1)'>Cima</button>
+                            <button onclick='ordenar(${i},1)'>Baixo</button>
+                        </td>
+                    </tr>`;
       }
       document.getElementById("corpoTabela").innerHTML = txLinhas;
       itemLista = document.getElementById("pg-" + pg);
@@ -55,22 +55,10 @@
       antigo.value = pg;
     }
 
+
+
     function mudarPagina(pg) {
       carregarTabela(pgAtual + pg);
-    }
-    
-    function ordenar(btn, ordem) {
-       //            BUTTON  TD      TR
-       //  trAtual ir apontar para a TR de onde foi clicado o botão
-       var trAtual = btn.parentNode.parentNode;
-       
-       // se for 1 é para baixo, então valida o nextSibling e insere depois (after)         
-       if (ordem == 1 && trAtual.nextSibling != null) {
-          trAtual.nextSibling.after(trAtual);
-       // se for -1 é para cima, então valida o previousSibling e insere antes (before)         
-       } else if (ordem == -1 && trAtual.previousSibling != null) {
-         trAtual.previousSibling.before(trAtual);
-       }
     }
     
   </script>
